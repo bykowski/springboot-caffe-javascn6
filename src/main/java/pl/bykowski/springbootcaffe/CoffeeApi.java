@@ -70,8 +70,6 @@ public class CoffeeApi {
 
 
 
-
-
     @EventListener(ApplicationReadyEvent.class)
     public void get() {
         Coffee coffee1 = new Coffee(1L, "Prima", "Black");
@@ -80,6 +78,9 @@ public class CoffeeApi {
         coffeList.add(coffee1);
         coffeList.add(coffee2);
         coffeList.add(coffee3);
+    }
+    public String my() {
+        return "Moja zamiana";
     }
 
 }
