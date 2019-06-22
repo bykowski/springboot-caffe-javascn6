@@ -1,5 +1,6 @@
 package pl.bykowski.springbootcaffe;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,31 @@ import java.util.Optional;
 
 @RestController
 public class CoffeeApi {
+
+//    1 BEGIN - wstrzykiwanie do pola
+//    @Autowired
+//    private CoffeeRepo coffeeRepo;
+//    1 END - wstrzykiwanie do pola
+
+
+    //    2 BEGIN - wstrzykiwanie do konstruktora
+    private CoffeeRepo coffeeRepo;
+
+    @Autowired
+    public CoffeeApi(CoffeeRepo coffeeRepo) {
+        this.coffeeRepo = coffeeRepo;
+    }
+    //    2 END - wstrzykiwanie do konstruktora
+
+    //    3 BEGIN - wstrzykiwanie do metody
+//    private CoffeeRepo coffeeRepo;
+//
+//    @Autowired
+//    public void setCoffeeRepo(CoffeeRepo coffeeRepo) {
+//        this.coffeeRepo = coffeeRepo;
+//    }
+    //    3 END - wstrzykiwanie do metody
+
 
     private List<Coffee> coffeList;
 
@@ -44,8 +70,7 @@ public class CoffeeApi {
 
         Coffee foundElement = null;
         for (Coffee coffee1 : coffeList) {
-            if(coffee1.getId().equals(coffee.getId()))
-            {
+            if (coffee1.getId().equals(coffee.getId())) {
                 foundElement = coffee1;
             }
         }
@@ -55,32 +80,23 @@ public class CoffeeApi {
 
     @GetMapping("/hello/{lang}")
     public String get(@PathVariable String lang) {
-        if(lang.equals("PL"))
-        {
+        if (lang.equals("PL")) {
             return "Cześć";
         }
-        if(lang.equals("EN"))
-        {
+        if (lang.equals("EN")) {
             return "Hello";
         }
         return "Niepojemaju";
     }
 
 
-
-
-
     @EventListener(ApplicationReadyEvent.class)
     public void get() {
-        Coffee coffee1 = new Coffee(1L, "Prima", "Black");
-        Coffee coffee2 = new Coffee(2L, "Czibo", "Black");
-        Coffee coffee3 = new Coffee(3L, "Jacobs", "Black");
-        coffeList.add(coffee1);
-        coffeList.add(coffee2);
-        coffeList.add(coffee3);
+        Coffee coffee1 = new Coffee("Prima", "Black");
+        Coffee coffee2 = new Coffee("Czibo", "Black");
+        Coffee coffee3 = new Coffee("Jacobs", "Black");
+        coffeeRepo.save(coffee1);
+        coffeeRepo.save(coffee2);
+        coffeeRepo.save(coffee3);
     }
-    public String my() {
-        return "Moja zamiana";
-    }
-
 }
